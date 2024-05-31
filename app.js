@@ -1,21 +1,25 @@
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+import createError from 'http-errors';
+import express, { json, urlencoded } from 'express';
+import { join } from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import { router } from './routes/index.js';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-const indexRouter = require('./routes/index');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-const app = express();
+export const app = express();
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(json());
+app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(join(__dirname, 'public')));
 
 // RUTAS
-app.use('/', indexRouter);
+app.use('/', router);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -33,4 +37,3 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;

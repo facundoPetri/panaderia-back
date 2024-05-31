@@ -4,11 +4,14 @@
  * Module dependencies.
  */
 
-const app = require("../app");
-const debug = require("debug")("panaderia-back:server");
-const http = require("http");
-const mongoose = require("mongoose");
-require("dotenv").config(); 
+import { app } from "../app.js";
+import debug from "debug";
+import { createServer } from "http";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config()
+debug("panaderia-back:server");
 
 /**
  * Get port from environment and store in Express.
@@ -21,7 +24,7 @@ app.set("port", port);
  * Create HTTP server.
  */
 
-const server = http.createServer(app);
+const server = createServer(app);
 mongoose.connect(process.env.MONGO_URI);
 
 const db = mongoose.connection;
